@@ -146,7 +146,7 @@ class DataFrameAnalyzer:
             
             # Gráfico de barras
             plt.subplot(1, 2, 1)
-            sns.countplot(y=categorical_df[col], order=categorical_df[col].value_counts().index, palette="viridis")
+            sns.countplot(y=categorical_df[col], order=categorical_df[col].value_counts().index, color='blue')
             plt.title(f"Frecuencia de {col}")
             plt.xlabel("Frecuencia")
             plt.ylabel(col)
