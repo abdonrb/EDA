@@ -1,5 +1,7 @@
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 class DataFrameAnalyzer:
     def __init__(self, dataframe: pd.DataFrame):
@@ -109,3 +111,51 @@ class DataFrameAnalyzer:
         }
         
         return pd.DataFrame(stats)
+    
+    def plot_numeric(self):
+        """
+        Genera histogramas y boxplots para todas las variables numéricas.
+        """
+        numeric_df = self.df.select_dtypes(include=['number'])
+        for col in numeric_df.columns:
+            plt.figure(figsize=(14, 6))
+            
+            # Histograma
+            plt.subplot(1, 2, 1)
+            sns.histplot(numeric_df[col], kde=True, bins=20, color='blue')
+            plt.title(f"Distribución de {col}")
+            plt.xlabel(col)
+            plt.ylabel("Frecuencia")
+            
+            # Boxplot
+            plt.subplot(1, 2, 2)
+            sns.boxplot(x=numeric_df[col], color='green')
+            plt.title(f"Boxplot de {col}")
+            plt.xlabel(col)
+            
+            plt.tight_layout()
+            plt.show()
+
+    def plot_categorical(self):
+        """
+        Genera gráficos de barras y pie charts para todas las variables categóricas.
+        """
+        categorical_df = self.df.select_dtypes(include=['object', 'category'])
+        for col in categorical_df.columns:
+            plt.figure(figsize=(14, 6))
+            
+            # Gráfico de barras
+            plt.subplot(1, 2, 1)
+            sns.countplot(y=categorical_df[col], order=categorical_df[col].value_counts().index, palette="viridis")
+            plt.title(f"Frecuencia de {col}")
+            plt.xlabel("Frecuencia")
+            plt.ylabel(col)
+            
+            # Pie chart
+            plt.subplot(1, 2, 2)
+            categorical_df[col].value_counts().plot.pie(autopct='%1.1f%%', startangle=90, cmap="viridis")
+            plt.title(f"Proporción de {col}")
+            plt.ylabel("")
+            
+            plt.tight_layout()
+            plt.show()    
